@@ -13,7 +13,6 @@ class CourseDetails extends StatefulWidget {
 }
 
 class _CourseDetailsState extends State<CourseDetails> {
-
   late VideoPlayerController _controller;
 
   @override
@@ -28,19 +27,26 @@ class _CourseDetailsState extends State<CourseDetails> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final size=MediaQuery.sizeOf(context);
+    final size = MediaQuery.sizeOf(context);
     print(widget.courseDetails);
     return Scaffold(
-        appBar: customAppBar(
-            context: context, title: widget.courseDetails['name']
-        ),
+      appBar:
+          customAppBar(context: context, title: widget.courseDetails['name']),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: size.height*.25,
+              height: size.height * .25,
               decoration: BoxDecoration(
                 color: AppColor.backgroundColor,
                 borderRadius: BorderRadius.circular(20),
@@ -52,27 +58,64 @@ class _CourseDetailsState extends State<CourseDetails> {
                   )
                 ],
               ),
-              child: _controller.value.isInitialized? AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
-              )
-              :
-              Center(child: Text('No video'))
-              ,
+              child: _controller.value.isInitialized
+                  ? AspectRatio(
+                      aspectRatio: _controller.value.aspectRatio,
+                      child: VideoPlayer(_controller),
+                    )
+                  : Center(child: Text('No video')),
+            ),
+            SizedBox(
+              height: 8.0,
+            ),
+            Text(widget.courseDetails['name']),
+            Row(
+              children: [
+                Text('Ceated By'),
+                SizedBox(
+                  width: 4.0,
+                ),
+                Text(
+                  'Muhibbul Hasan',
+                  style: TextStyle(
+                      color: AppColor.primaryColor,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            SizedBox(
+              width: 4.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.star_border_outlined),
+                    Text('4.8'),
+                    SizedBox(
+                      width: 5.0,
+                    ),
+                    Icon(Icons.watch_later_outlined),
+                    Text('72 hours')
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                      '\$40',
+                      style: TextStyle(
+                          color: AppColor.primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    )
+                  ],
+                ),
+              ],
             ),
           ],
         ),
       ),
-          floatingActionButton: FloatingActionButton(
-    onPressed: () {
-    setState(() {
-    _controller.value.isPlaying
-    ? _controller.pause()
-        : _controller.play();
-    });
-    },
-
-          ));
-
+    );
   }
 }
