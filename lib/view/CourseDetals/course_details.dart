@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:second/utils/color.dart';
 import 'package:second/wigets/custom_appbar.dart';
 import 'package:second/wigets/custom_button.dart';
+import 'package:second/wigets/playlist_wiget.dart';
 import 'package:video_player/video_player.dart';
 
 class CourseDetails extends StatefulWidget {
@@ -131,7 +132,9 @@ class _CourseDetailsState extends State<CourseDetails> {
               Expanded(
                 child: TabBarView(
                     children: [
-                  Center(child: Text('Playlist')),
+                      PlaylistWiget(),
+
+                      // Center(child: Text('Play')),
                   Center(child: Text('Description')),
                 ]),
               ),
