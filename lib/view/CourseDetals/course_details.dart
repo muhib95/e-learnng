@@ -38,6 +38,12 @@ class _CourseDetailsState extends State<CourseDetails> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
+    void toggleplaypause() {
+      setState(() {
+        _controller.value.isPlaying ? _controller.pause() : _controller.play();
+      });
+    }
+
     print(widget.courseDetails);
     return DefaultTabController(
       length: 2,
@@ -65,9 +71,33 @@ class _CourseDetailsState extends State<CourseDetails> {
                   ],
                 ),
                 child: _controller.value.isInitialized
-                    ? AspectRatio(
-                        aspectRatio: _controller.value.aspectRatio,
-                        child: VideoPlayer(_controller),
+                    ? Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          AspectRatio(
+                            aspectRatio: _controller.value.aspectRatio,
+                            child: VideoPlayer(_controller),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    toggleplaypause();
+                                  },
+                                  icon: Icon(
+                                      size: 45,
+                                      _controller.value.isPlaying
+                                          ? Icons.pause
+                                          : Icons.play_arrow,
+                                      color: _controller.value.isPlaying
+                                          ? Colors.white.withOpacity(0.2)
+                                          : Colors.white))
+                            ],
+                          ),
+                        ],
                       )
                     : Center(child: Text('No video')),
               ),
@@ -130,11 +160,10 @@ class _CourseDetailsState extends State<CourseDetails> {
                 width: 4.0,
               ),
               Expanded(
-                child: TabBarView(
-                    children: [
-                      PlaylistWiget(),
+                child: TabBarView(children: [
+                  PlaylistWiget(),
 
-                      // Center(child: Text('Play')),
+                  // Center(child: Text('Play')),
                   Center(child: Text('Description')),
                 ]),
               ),
@@ -151,14 +180,14 @@ class _CourseDetailsState extends State<CourseDetails> {
                 color: Colors.white,
                 child: Row(
                   children: [
-                    CustomButton(buttonText: 'Enroll Now')
+                    CustomButton(buttonText: 'Enroll Now'),
+
                   ],
                 ),
               ),
             ),
           ],
         ),
-
       ),
     );
   }
